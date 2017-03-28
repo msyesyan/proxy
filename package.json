@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "bin": {
+    "proxy": "./index.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,5 +18,9 @@
   "bugs": {
     "url": "https://github.com/msyesyan/proxy/issues"
   },
-  "homepage": "https://github.com/msyesyan/proxy#readme"
+  "homepage": "https://github.com/msyesyan/proxy#readme",
+  "dependencies": {
+    "commander": "^2.9.0",
+    "shelljs": "^0.7.7"
+  }
 }

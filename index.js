@@ -2,26 +2,23 @@
 
 const program = require('commander');
 const shelljs = require('shelljs');
-const child_process = require('child_process');
 
 const { sshUser, sshServer, sshPort } = require('./config/config.json');
 const privoxy_config = '/usr/local/etc/privoxy/config';
-const privoxy_pidfile = '/Users/channing/privoxy.pid';
 
 const socks = require('./lib/socks.js')
 
 const startPrivoxy = () => {
-  shelljs.exec(`privoxy --pidfile ${privoxy_pidfile} ${privoxy_config}`, { async: true });
+  shelljs.exec(`privoxy --pidfile ${privoxy_pidfile} ${privoxy_config}`);
   shelljs.echo('privoxy start successfully');
 };
 
 const stopPrivoxy = () => {
-  let pid = shelljs.test('-f', privoxy_pidfile) && shelljs.cat(privoxy_pidfile);
+  let pid = shelljs.exec('ps -axc | pgrep privoxy | head -n 1')
   if (pid) {
     shelljs.exec(`kill -9 ${pid}`, { silent: true }, function(code, stdout, stderr) {
       if (!stderr) {
-        shelljs.rm('-rf', privoxy_pidfile);
-        shelljs.echo('stop privoxy successfully');
+        shelljs.echo(`kill pid ${pid}, stop privoxy successfully`);
       }
     });
   }
@@ -30,7 +27,7 @@ const stopPrivoxy = () => {
 const getStatus = () => {
   return {
     ssh_tunnel: socks.pids.length > 0,
-    privoxy: shelljs.test('-f', privoxy_pidfile),
+    privoxy: !!shelljs.exec('ps -axc | pgrep privoxy | head -n 1')
   }
 }
 

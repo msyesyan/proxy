@@ -9,7 +9,7 @@ const privoxy_config = '/usr/local/etc/privoxy/config';
 const socks = require('./lib/socks.js')
 
 const startPrivoxy = () => {
-  shelljs.exec(`privoxy --pidfile ${privoxy_pidfile} ${privoxy_config}`);
+  shelljs.exec(`privoxy ${privoxy_config}`);
   shelljs.echo('privoxy start successfully');
 };
 
